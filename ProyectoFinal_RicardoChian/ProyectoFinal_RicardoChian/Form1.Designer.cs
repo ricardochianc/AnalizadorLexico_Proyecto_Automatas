@@ -101,12 +101,13 @@
             // lb_Error
             // 
             this.lb_Error.Font = new System.Drawing.Font("Microsoft YaHei UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lb_Error.ForeColor = System.Drawing.Color.Firebrick;
+            this.lb_Error.ForeColor = System.Drawing.Color.OrangeRed;
             this.lb_Error.Location = new System.Drawing.Point(9, 332);
             this.lb_Error.Name = "lb_Error";
             this.lb_Error.Size = new System.Drawing.Size(483, 86);
             this.lb_Error.TabIndex = 4;
-            this.lb_Error.Text = "El archivo se ha procesado correctamente";
+            this.lb_Error.Text = "Error en la columna 40, fila 10. No tiene paréntesis de apertura, por favor verif" +
+    "icar eso";
             this.lb_Error.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.lb_Error.Visible = false;
             // 
