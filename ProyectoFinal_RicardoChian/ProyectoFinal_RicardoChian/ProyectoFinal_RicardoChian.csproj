@@ -84,22 +84,10 @@
     <None Include="Resources\FondoAzul.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\FondoAzulAmarillo.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Cargar archivo.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Continuar.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\fondo boton.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\botonAul.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\BotonAnalizar.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ContinuarVerde.png" />
