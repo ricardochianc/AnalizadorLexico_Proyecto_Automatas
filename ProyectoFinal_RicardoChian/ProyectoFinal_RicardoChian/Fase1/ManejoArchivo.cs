@@ -44,7 +44,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
         /// </summary>
         /// <param name="subcadena"></param>
         /// <returns></returns>
-        private string RemoverEspacios(string subcadena)
+        private string RemoverTodosEspacios(string subcadena)
         {
             if (subcadena.Contains(" "))
             {
@@ -56,6 +56,12 @@ namespace ProyectoFinal_RicardoChian.Fase1
                 subcadena = subcadena.Replace("\t", "");
             }
             return subcadena;
+        }
+
+        private string RemoverEspaciosLaterales(string subcadena)
+        {
+            subcadena = subcadena.TrimStart();
+            return subcadena.TrimEnd();
         }
 
         /// <summary>
@@ -92,8 +98,9 @@ namespace ProyectoFinal_RicardoChian.Fase1
             {
                 var posicion = linea.IndexOf('=');
 
-                subCadenaIzq = linea.Remove(0, posicion);
-                subCadenaDrch = linea.Remove(posicion+1, (linea.Length-posicion));
+                subCadenaIzq = linea.Split('=')[0];
+
+                subCadenaDrch = linea.Split('=')[1];
 
                 return true;
             }
@@ -134,11 +141,15 @@ namespace ProyectoFinal_RicardoChian.Fase1
                         if (Contenido.ToUpper().Contains("ERROR"))
                         {
                             
-                            if (AnalizarSets(Contenido.Substring(Contenido.ToUpper().IndexOf("SETS"), (Contenido.ToUpper().IndexOf("TOKENS") - Contenido.ToUpper().IndexOf("SETS")))) == false)
+                            if (AnalizarSets(Contenido.Substring(Contenido.ToUpper().IndexOf("SETS"), (Contenido.ToUpper().IndexOf("TOKENS") - Contenido.ToUpper().IndexOf("SETS"))),ref advertencia))
                             {
                                 //Aquí se le quita la parte de SETS a todo el texto
                                 Contenido = Contenido.Remove(Contenido.ToUpper().IndexOf("SETS"), (Contenido.ToUpper().IndexOf("TOKENS") - Contenido.ToUpper().IndexOf("SETS")));
 
+                            }
+                            else
+                            {
+                                return false;
                             }
 
 
@@ -173,13 +184,75 @@ namespace ProyectoFinal_RicardoChian.Fase1
 
         //----------------------------------------SETS--------------------------------------------------------------
 
-        private bool AnalizarSets(string contenido)
+        private bool AnalizarSets(string contenido, ref string advertencia)
         {
             var lineas = contenido.Split('\n').ToList();
 
+            if (Fila == -1)
+            {
+                Fila = 0;
+            }
+
+            lineas.RemoveAt(lineas.Count-1);
+
             foreach (var linea in lineas)
             {
-                
+                var lineaAux = string.Empty;
+                Fila++;
+                Columna = 0;
+
+                //Si está vacío verificar que la primer línea de la sección de SETS sea la palabra definidora de la sección (SETES)
+                if (Sets.Count == 0) 
+                {
+                    lineaAux = RemoverTodosEspacios(linea.Trim('\r'));
+
+                    if (lineaAux.ToUpperInvariant() == "SETS")
+                    {
+                        Sets.Add(lineaAux, null);
+                    }
+                }
+                else
+                {
+                    lineaAux = RemoverEspaciosLaterales(linea).Trim('\r');
+
+                    if (lineaAux != "")
+                    {
+                        var subIzq = string.Empty;
+                        var subDrch = string.Empty;
+
+                        if (lineaAux.Contains("="))
+                        {
+                            VerificadorIgual(linea, ref subIzq, ref subDrch);
+
+                            //si tiene espacio es un error en el nombre del SET
+                            if (RemoverEspaciosLaterales(subIzq).Contains(" ")) 
+                            {
+                                var auxIzq = subIzq.TrimStart();
+
+                                Columna = subIzq.Length - auxIzq.Length;
+                                Columna += RemoverEspaciosLaterales(subIzq).IndexOf(' ');
+
+                                advertencia = Advertencia.SetsAdvertencias[0];
+                                return false;
+                            }
+                            else
+                            {
+                                var setAnalizado = RemoverEspaciosLaterales(subIzq); //Ejemplo LETRA, DIGITO, CHARSET
+                                Sets.Add(setAnalizado, null);
+
+
+
+                            }
+                        }
+                        else //ERROR EN LA LÍNEA PORQUE NO CONTIENE UN SIGNO IGUAL
+                        {
+                            advertencia = Advertencia.SetsAdvertencias[1];
+                            Columna = -1;
+                            return false;
+                        }
+                    }
+                }
+
             }
 
             return false;
@@ -200,8 +273,8 @@ namespace ProyectoFinal_RicardoChian.Fase1
 
             if (VerificadorIgual(linea, ref subCadenaIzq, ref subCadenaDrch))
             {
-                subCadenaIzq = RemoverEspacios(subCadenaIzq);
-                subCadenaDrch = RemoverEspacios(subCadenaDrch);
+                subCadenaIzq = RemoverTodosEspacios(subCadenaIzq);
+                subCadenaDrch = RemoverTodosEspacios(subCadenaDrch);
 
                 if (subCadenaIzq != "" && subCadenaIzq.ToUpper() == "ERROR")
                 {

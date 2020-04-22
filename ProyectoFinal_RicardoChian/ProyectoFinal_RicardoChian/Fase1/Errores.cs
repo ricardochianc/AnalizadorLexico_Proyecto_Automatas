@@ -23,6 +23,11 @@ namespace ProyectoFinal_RicardoChian.Fase1
             AdvertenciasGenerales.Add("El archivo no contiene:  "); //2
             AdvertenciasGenerales.Add("La sección SETS debe ir primero que la sección TOKENS");//3
             AdvertenciasGenerales.Add("El valor de ERROR es incorrecto");//
+
+            SetsAdvertencias = new List<string>();
+
+            SetsAdvertencias.Add("El nombre definidor del SET contiene un espacio de por medio"); //0
+            SetsAdvertencias.Add("El set no contiene un signo igual que le de definición, formato: NOMBRE = DEFINICIÓN"); //1
         }
     }
 }
