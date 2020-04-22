@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace ProyectoFinal_RicardoChian
 {
-    public partial class Form1 : Form
+    public partial class Home : Form
     {
-        public Form1()
+        public Home()
         {
             InitializeComponent();
+        }
+
+        private void btn_CargarArchivo_Click(object sender, EventArgs e)
+        {
+            openFileDialog_archivo.ShowDialog();
         }
     }
 }

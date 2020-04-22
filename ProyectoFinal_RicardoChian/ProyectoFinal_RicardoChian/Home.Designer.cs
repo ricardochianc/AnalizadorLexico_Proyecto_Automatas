@@ -1,6 +1,6 @@
 ﻿namespace ProyectoFinal_RicardoChian
 {
-    partial class Form1
+    partial class Home
     {
         /// <summary>
         /// Variable del diseñador necesaria.
@@ -32,6 +32,7 @@
             this.lb_NombreArchivo = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btn_CargarArchivo = new System.Windows.Forms.PictureBox();
+            this.openFileDialog_archivo = new System.Windows.Forms.OpenFileDialog();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btn_CargarArchivo)).BeginInit();
             this.SuspendLayout();
@@ -81,8 +82,14 @@
             this.btn_CargarArchivo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.btn_CargarArchivo.TabIndex = 0;
             this.btn_CargarArchivo.TabStop = false;
+            this.btn_CargarArchivo.Click += new System.EventHandler(this.btn_CargarArchivo_Click);
             // 
-            // Form1
+            // openFileDialog_archivo
+            // 
+            this.openFileDialog_archivo.DefaultExt = "txt";
+            this.openFileDialog_archivo.Filter = "Archivos de texto|*.txt";
+            // 
+            // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -94,7 +101,7 @@
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "Home";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Analizador léxico";
             this.groupBox1.ResumeLayout(false);
@@ -110,6 +117,7 @@
         private System.Windows.Forms.PictureBox btn_CargarArchivo;
         private System.Windows.Forms.Label lb_NombreArchivo;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog_archivo;
     }
 }
 
