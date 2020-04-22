@@ -19,7 +19,10 @@ namespace ProyectoFinal_RicardoChian.Fase1
             AdvertenciasGenerales = new List<string>();
 
             AdvertenciasGenerales.Add("El archivo tiene el formato correcto"); //0
-            AdvertenciasGenerales.Add("El archvio no contiene la siguiente parte: "); //1
+            AdvertenciasGenerales.Add("El archivo se encuentra vacío"); //1
+            AdvertenciasGenerales.Add("El archivo no contiene:  "); //2
+            AdvertenciasGenerales.Add("La sección SETS debe ir primero que la sección TOKENS");//3
+            AdvertenciasGenerales.Add("El valor de ERROR es incorrecto");//
         }
     }
 }

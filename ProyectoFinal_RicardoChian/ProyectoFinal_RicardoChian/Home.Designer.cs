@@ -33,19 +33,22 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btn_CargarArchivo = new System.Windows.Forms.PictureBox();
             this.openFileDialog_archivo = new System.Windows.Forms.OpenFileDialog();
+            this.btn_continuar = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btn_CargarArchivo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btn_continuar)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.btn_continuar);
             this.groupBox1.Controls.Add(this.lb_NombreArchivo);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.btn_CargarArchivo);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(12, 14);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(670, 430);
             this.groupBox1.TabIndex = 0;
@@ -88,6 +91,20 @@
             // 
             this.openFileDialog_archivo.DefaultExt = "txt";
             this.openFileDialog_archivo.Filter = "Archivos de texto|*.txt";
+            this.openFileDialog_archivo.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog_archivo_FileOk);
+            // 
+            // btn_continuar
+            // 
+            this.btn_continuar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_continuar.Image = global::ProyectoFinal_RicardoChian.Properties.Resources.ContinuarVerde;
+            this.btn_continuar.Location = new System.Drawing.Point(307, 238);
+            this.btn_continuar.Name = "btn_continuar";
+            this.btn_continuar.Size = new System.Drawing.Size(70, 37);
+            this.btn_continuar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.btn_continuar.TabIndex = 3;
+            this.btn_continuar.TabStop = false;
+            this.btn_continuar.Visible = false;
+            this.btn_continuar.Click += new System.EventHandler(this.btn_continuar_Click);
             // 
             // Home
             // 
@@ -107,6 +124,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btn_CargarArchivo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btn_continuar)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -118,6 +136,7 @@
         private System.Windows.Forms.Label lb_NombreArchivo;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.OpenFileDialog openFileDialog_archivo;
+        private System.Windows.Forms.PictureBox btn_continuar;
     }
 }
 

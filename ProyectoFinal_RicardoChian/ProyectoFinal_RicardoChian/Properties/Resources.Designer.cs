@@ -63,6 +63,16 @@ namespace ProyectoFinal_RicardoChian.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Análisis {
+            get {
+                object obj = ResourceManager.GetObject("Análisis", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Cargar_archivo {
             get {
                 object obj = ResourceManager.GetObject("Cargar_archivo", resourceCulture);
