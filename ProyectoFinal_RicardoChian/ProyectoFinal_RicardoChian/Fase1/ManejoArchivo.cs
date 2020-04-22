@@ -127,15 +127,20 @@ namespace ProyectoFinal_RicardoChian.Fase1
 
             if (Contenido.ToUpper().Contains("SETS") )
             {
-
-
-
                 if (Contenido.ToUpper().Contains("TOKENS"))
                 {
                     if (Contenido.ToUpper().Contains("ACTIONS"))
                     {
                         if (Contenido.ToUpper().Contains("ERROR"))
                         {
+                            
+                            if (AnalizarSets(Contenido.Substring(Contenido.ToUpper().IndexOf("SETS"), (Contenido.ToUpper().IndexOf("TOKENS") - Contenido.ToUpper().IndexOf("SETS")))) == false)
+                            {
+                                //Aquí se le quita la parte de SETS a todo el texto
+                                Contenido = Contenido.Remove(Contenido.ToUpper().IndexOf("SETS"), (Contenido.ToUpper().IndexOf("TOKENS") - Contenido.ToUpper().IndexOf("SETS")));
+
+                            }
+
 
                         }
                         else
@@ -167,6 +172,19 @@ namespace ProyectoFinal_RicardoChian.Fase1
         }
 
         //----------------------------------------SETS--------------------------------------------------------------
+
+        private bool AnalizarSets(string contenido)
+        {
+            var lineas = contenido.Split('\n').ToList();
+
+            foreach (var linea in lineas)
+            {
+                
+            }
+
+            return false;
+        }
+
 
         //----------------------------------------ERROR-------------------------------------------------------------
 

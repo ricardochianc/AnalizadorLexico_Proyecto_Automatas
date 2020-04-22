@@ -43,10 +43,29 @@ namespace ProyectoFinal_RicardoChian
             }
             else
             {
-                //Mostrar MessageBox y limpiar pantalla y volver al inicio
-                MessageBox.Show(mensaje, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                lb_NombreArchivo.Text = string.Empty;
-                btn_continuar.Hide();
+                if (Analizador.ManejadorArchivo.Fila != -1 && Analizador.ManejadorArchivo.Columna != -1)
+                {
+                    //Mostrar MessageBox y limpiar pantalla y volver al inicio
+                    MessageBox.Show(mensaje + "\nFila: " + Analizador.ManejadorArchivo.Fila + "\nColumna: " + Analizador.ManejadorArchivo.Columna, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    lb_NombreArchivo.Text = string.Empty;
+                    btn_continuar.Hide();
+                }
+                else if(Analizador.ManejadorArchivo.Fila == -1)
+                {
+                    //Mostrar MessageBox y limpiar pantalla y volver al inicio
+                    MessageBox.Show(mensaje + "\nFila: No determinada" + "\nColumna: " + Analizador.ManejadorArchivo.Columna, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    lb_NombreArchivo.Text = string.Empty;
+                    btn_continuar.Hide();
+                }
+                else if(Analizador.ManejadorArchivo.Columna == -1)
+                {
+                    //Mostrar MessageBox y limpiar pantalla y volver al inicio
+                    MessageBox.Show(mensaje + "\nFila: " + Analizador.ManejadorArchivo.Fila + "\nColumna: No determinada", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    lb_NombreArchivo.Text = string.Empty;
+                    btn_continuar.Hide();
+                }
+
+                
             }
         }
     }
