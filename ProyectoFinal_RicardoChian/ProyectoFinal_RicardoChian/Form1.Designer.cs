@@ -32,8 +32,6 @@
             this.lb_NombreArchivo = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btn_CargarArchivo = new System.Windows.Forms.PictureBox();
-            this.lb_Correcto = new System.Windows.Forms.Label();
-            this.lb_Error = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btn_CargarArchivo)).BeginInit();
             this.SuspendLayout();
@@ -41,8 +39,6 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox1.Controls.Add(this.lb_Error);
-            this.groupBox1.Controls.Add(this.lb_Correcto);
             this.groupBox1.Controls.Add(this.lb_NombreArchivo);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.btn_CargarArchivo);
@@ -86,31 +82,6 @@
             this.btn_CargarArchivo.TabIndex = 0;
             this.btn_CargarArchivo.TabStop = false;
             // 
-            // lb_Correcto
-            // 
-            this.lb_Correcto.AutoSize = true;
-            this.lb_Correcto.Font = new System.Drawing.Font("Microsoft YaHei UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lb_Correcto.ForeColor = System.Drawing.Color.LawnGreen;
-            this.lb_Correcto.Location = new System.Drawing.Point(9, 399);
-            this.lb_Correcto.Name = "lb_Correcto";
-            this.lb_Correcto.Size = new System.Drawing.Size(323, 19);
-            this.lb_Correcto.TabIndex = 3;
-            this.lb_Correcto.Text = "El archivo se ha procesado correctamente";
-            this.lb_Correcto.Visible = false;
-            // 
-            // lb_Error
-            // 
-            this.lb_Error.Font = new System.Drawing.Font("Microsoft YaHei UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lb_Error.ForeColor = System.Drawing.Color.OrangeRed;
-            this.lb_Error.Location = new System.Drawing.Point(9, 332);
-            this.lb_Error.Name = "lb_Error";
-            this.lb_Error.Size = new System.Drawing.Size(483, 86);
-            this.lb_Error.TabIndex = 4;
-            this.lb_Error.Text = "Error en la columna 40, fila 10. No tiene paréntesis de apertura, por favor verif" +
-    "icar eso";
-            this.lb_Error.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.lb_Error.Visible = false;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -125,7 +96,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Escaner";
+            this.Text = "Analizador léxico";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btn_CargarArchivo)).EndInit();
@@ -139,8 +110,6 @@
         private System.Windows.Forms.PictureBox btn_CargarArchivo;
         private System.Windows.Forms.Label lb_NombreArchivo;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lb_Error;
-        private System.Windows.Forms.Label lb_Correcto;
     }
 }
 
