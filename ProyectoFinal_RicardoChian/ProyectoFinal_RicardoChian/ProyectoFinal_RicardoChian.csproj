@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Fase1\ArbolExpresiones.cs" />
+    <Compile Include="Fase1\ExpresionPostfija.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,5 +97,6 @@
   <ItemGroup>
     <None Include="Resources\Lupa.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
