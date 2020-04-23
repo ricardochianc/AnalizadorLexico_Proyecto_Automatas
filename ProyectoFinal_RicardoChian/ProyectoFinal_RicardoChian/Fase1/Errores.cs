@@ -48,6 +48,8 @@ namespace ProyectoFinal_RicardoChian.Fase1
             tokensAdvertencias.Add("No existe comilla simple de apertura"); //6
             tokensAdvertencias.Add("No existe comillas simples de cierre"); //7
             tokensAdvertencias.Add("El formato de comillas está malo, debe de existir un único caracter encerrado en comillas"); //8
+            tokensAdvertencias.Add("La expresión no forma parte de algún SET definido previamente"); //9 nuevos
+            tokensAdvertencias.Add("El caracter no forma parte de algún SET definido previamente"); //10 nuveos
         }
     }
 }

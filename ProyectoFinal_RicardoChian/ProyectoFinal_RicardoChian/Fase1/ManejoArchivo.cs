@@ -98,11 +98,11 @@ namespace ProyectoFinal_RicardoChian.Fase1
         {
             if (linea.Contains('='))
             {
-                var posicion = linea.IndexOf('=');
+                var posicion = linea.IndexOf('=')+1;
 
                 subCadenaIzq = linea.Split('=')[0];
 
-                subCadenaDrch = linea.Split('=')[1];
+                subCadenaDrch = linea.Substring(posicion, (linea.Length-posicion));
 
                 return true;
             }
@@ -681,8 +681,9 @@ namespace ProyectoFinal_RicardoChian.Fase1
                                 //ACÁ SE EMPIEZA A ANALIZAR LOS VALORES DEL TOKEN
                                 while (subDrch.Length > 0)
                                 {
-                                    var palabraSet = string.Empty;
+                                    var palabraToken = string.Empty;
 
+                                    //SI EL CARACTER ANALIZADO ES UNA COMILLA
                                     if (subDrch[0] == '\'') //Si el primer caracter analizado es una comilla simple...
                                     {
                                         var esCorrecto = false;
@@ -690,7 +691,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
 
                                         if (esCorrecto)
                                         {
-                                            Sets[tokenAnalizado.ToString()].Add(caracter.ToString());
+                                            Tokens[tokenAnalizado.ToString()].Add(caracter.ToString());
                                             subDrch = subDrch.Remove(0, 3);
                                             Columna += 3;
                                         }
@@ -702,10 +703,26 @@ namespace ProyectoFinal_RicardoChian.Fase1
                                             return esCorrecto;
                                         }
                                     }
-                                    else if (subDrch[0] == ' ' && palabraSet == string.Empty)
+                                    //SI ES UN ESPACIO EN BLANCO Y NO HAY UNA PALABRA PENDIENTE DE FORMAR...
+                                    else if (subDrch[0] == ' ' && palabraToken == string.Empty)
                                     {
                                         subDrch = subDrch.Remove(0, 1);
                                         Columna++;
+                                    }
+                                    else if(subDrch[0] == ' ' && palabraToken != string.Empty)
+                                    {
+                                        if (!Tokens.ContainsKey(palabraToken))
+                                        {
+                                            //ERROR DE QUE EL TOKEN ES INVÁLIDO PORQUE NO EXISTE UN DEFINICIÓN DE SET
+
+                                            //Todavía falta ver que cuando se guarde un token en la lista del diccionario, validar si existe en los sets
+                                            //Hacer un método para esto para que quede más ordenado
+                                            
+                                        }
+                                        else
+                                        {
+                                            //Guardarlo en la lista de los TOKENS, columna++ y remover ese caracter
+                                        }
                                     }
                                 }
 
