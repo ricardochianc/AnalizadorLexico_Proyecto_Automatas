@@ -319,6 +319,31 @@ namespace ProyectoFinal_RicardoChian.Fase1
             return EsCorrecto;
         }
 
+
+        /// <summary>
+        /// Verifica existencia de tokens en los SETS
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        private bool VerificarExistencia(string token)
+        {
+            var cont = 0;
+
+            foreach (var ListaSets in Sets)
+            {
+                if (ListaSets.Value != null)
+                {
+                    if (ListaSets.Key == token || ListaSets.Value.Contains(token))
+                    {
+                        return true;
+                    }
+                }
+
+                cont++;
+            }
+            return false;
+        }
+
         //--------------------------LECTURA VERIFICACIÓN GENERAL DEL ARCHIVO----------------------------------------
 
         /// <summary>
@@ -359,14 +384,12 @@ namespace ProyectoFinal_RicardoChian.Fase1
                                 //Aquí empieza el análisis de los TOKENS
                                 if(AnalizarTokens(Contenido.Substring(Contenido.ToUpper().IndexOf("TOKENS"), (Contenido.ToUpper().IndexOf("ACTIONS") - Contenido.ToUpper().IndexOf("TOKENS"))), ref advertencia))
                                 {
-
+                                    Contenido = Contenido.Remove(Contenido.ToUpper().IndexOf("TOKENS"), (Contenido.ToUpper().IndexOf("ACTIONS") - Contenido.ToUpper().IndexOf("TOKENS")));
                                 }
                                 else
                                 {
                                     return false;
                                 }
-
-
                             }
                             else
                             {
@@ -626,8 +649,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
 
         private bool AnalizarTokens(string contenido, ref string advertencia)
         {
-            Fila--;
-
+            
             var lineas = contenido.Split('\n').ToList();
 
             lineas.RemoveAt(lineas.Count-1);
@@ -678,11 +700,11 @@ namespace ProyectoFinal_RicardoChian.Fase1
 
                                 subDrch = RemoverEspaciosLaterales(subDrch);
 
+                                var palabraToken = string.Empty;
+
                                 //ACÁ SE EMPIEZA A ANALIZAR LOS VALORES DEL TOKEN
                                 while (subDrch.Length > 0)
                                 {
-                                    var palabraToken = string.Empty;
-
                                     //SI EL CARACTER ANALIZADO ES UNA COMILLA
                                     if (subDrch[0] == '\'') //Si el primer caracter analizado es una comilla simple...
                                     {
@@ -691,9 +713,18 @@ namespace ProyectoFinal_RicardoChian.Fase1
 
                                         if (esCorrecto)
                                         {
-                                            Tokens[tokenAnalizado.ToString()].Add(caracter.ToString());
-                                            subDrch = subDrch.Remove(0, 3);
-                                            Columna += 3;
+                                            if(VerificarExistencia(caracter.ToString()))
+                                            {
+                                                Tokens[tokenAnalizado.ToString()].Add(caracter.ToString());
+                                                subDrch = subDrch.Remove(0, 3);
+                                                Columna += 3;
+                                            }
+                                            else
+                                            {
+                                                advertencia = Advertencia.tokensAdvertencias[10];
+                                                Columna += 2;
+                                                return false;
+                                            }
                                         }
                                         else
                                         {
@@ -711,18 +742,44 @@ namespace ProyectoFinal_RicardoChian.Fase1
                                     }
                                     else if(subDrch[0] == ' ' && palabraToken != string.Empty)
                                     {
-                                        if (!Tokens.ContainsKey(palabraToken))
-                                        {
-                                            //ERROR DE QUE EL TOKEN ES INVÁLIDO PORQUE NO EXISTE UN DEFINICIÓN DE SET
+                                        Columna++;
 
-                                            //Todavía falta ver que cuando se guarde un token en la lista del diccionario, validar si existe en los sets
-                                            //Hacer un método para esto para que quede más ordenado
-                                            
+                                        if (!VerificarExistencia(palabraToken))
+                                        {
+                                            //ERROR DE QUE EL TOKEN ES INVÁLIDO PORQUE NO EXISTE UNA DEFINICIÓN DE SET
+                                            advertencia = Advertencia.tokensAdvertencias[9];
+                                            return false;
+
                                         }
                                         else
                                         {
                                             //Guardarlo en la lista de los TOKENS, columna++ y remover ese caracter
+                                            Tokens[tokenAnalizado.ToString()].Add(palabraToken);
+                                            palabraToken = string.Empty;
+                                            subDrch = subDrch.Remove(0, 1);
+
                                         }
+                                    }
+                                    //AHORITA VER SI SON SIMBOLOS DE OPERACION GUARDARLOS DIRECTAMENTE EN LA LISTA DE TOKENS
+                                    else if(subDrch[0] == '|' || subDrch[0] == '.' || subDrch[0] == '(' || subDrch[0] == ')')
+                                    {
+                                        Columna++;
+                                        Tokens[tokenAnalizado.ToString()].Add("\'" + subDrch[0].ToString());
+                                        subDrch = subDrch.Remove(0, 1);
+                                    }
+                                    //SI ES * O +, CONCATÁRSELO AL ÚLTIMO GUARDADO
+                                    else if(subDrch[0] == '*' || subDrch[0] == '+')
+                                    {
+                                        Columna++;
+                                        Tokens[tokenAnalizado.ToString()][Tokens[tokenAnalizado.ToString()].Count - 1] += subDrch[0];
+                                        subDrch = subDrch.Remove(0, 1);
+                                    }
+                                    //SI ES OTRO CARACTER IR CONCATENÁNDOLO A LA palabraToken
+                                    else if(subDrch[0] != '\'' && subDrch[0] != ' ')
+                                    {
+                                        Columna++;
+                                        palabraToken += subDrch[0];
+                                        subDrch = subDrch.Remove(0, 1);
                                     }
                                 }
 
