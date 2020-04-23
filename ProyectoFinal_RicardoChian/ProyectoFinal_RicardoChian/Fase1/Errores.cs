@@ -28,6 +28,12 @@ namespace ProyectoFinal_RicardoChian.Fase1
 
             SetsAdvertencias.Add("El nombre definidor del SET contiene un espacio de por medio"); //0
             SetsAdvertencias.Add("El set no contiene un signo igual que le de definición, formato: NOMBRE = DEFINICIÓN"); //1
+            SetsAdvertencias.Add("No existe comilla simple de inicio"); //2
+            SetsAdvertencias.Add("El rango debe de definirse con dos puntos consecutivos");//3
+            SetsAdvertencias.Add("Error en la definición de la función CHAR en el SET");//4
+            SetsAdvertencias.Add("La función CHR debe de tener paréntesis de apertura");//5
+            SetsAdvertencias.Add("La función CHR debe de tener paréntesis de cierre");//6
+            SetsAdvertencias.Add("Error en la función numérica que definen los CHR"); //7
         }
     }
 }

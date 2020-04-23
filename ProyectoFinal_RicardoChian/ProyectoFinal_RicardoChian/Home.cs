@@ -64,7 +64,8 @@ namespace ProyectoFinal_RicardoChian
                     lb_NombreArchivo.Text = string.Empty;
                     btn_continuar.Hide();
                 }
-
+                Analizador = null;
+                Analizador = new AnalizadorLexico();
                 
             }
         }

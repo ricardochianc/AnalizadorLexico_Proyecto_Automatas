@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net.Configuration;
 using System.Text;
@@ -12,7 +13,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
     public class ManejoArchivo
     {
         public string Contenido { get; set; }
-        
+
         public int Columna { get; set; }
         public int Fila { get; set; }
 
@@ -34,7 +35,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
             Actions = new Dictionary<string, List<string>>();
 
             Advertencia = new Errores();
-            
+
         }
 
         //----------------------------MÉTODOS GENERALES-------------------------------------------------------------
@@ -108,6 +109,174 @@ namespace ProyectoFinal_RicardoChian.Fase1
             return false;
         }
 
+        private int VerificadorChars(string linea, ref string subCadenaDrch, ref bool esCorrecto, ref string advertencia)
+        {
+            var aux = "";
+
+            if (linea.Length == 7)
+            {
+                if (linea[0].ToString().ToUpperInvariant() == "C")
+                {
+                    Columna++;
+
+                    if (linea[1].ToString().ToUpperInvariant() == "H")
+                    {
+                        Columna++;
+
+                        if (linea[2].ToString().ToUpperInvariant() == "R")
+                        {
+                            Columna++;
+
+                            if (linea[3].ToString().ToUpperInvariant() == "(")
+                            {
+                                Columna++;
+
+                                if (char.IsNumber(linea[4]))
+                                {
+                                    Columna++;
+                                    aux += linea[4];
+
+                                    if (char.IsNumber(linea[5]))
+                                    {
+                                        Columna++;
+                                        aux += linea[5];
+
+                                        if (linea[6].ToString().ToUpperInvariant() == ")")
+                                        {
+                                            Columna++;
+                                            esCorrecto = true;
+                                            subCadenaDrch = subCadenaDrch.Remove(0, 7);
+                                            return int.Parse(aux);
+                                        }
+                                        else
+                                        {
+                                            esCorrecto = false;
+                                            advertencia = Advertencia.SetsAdvertencias[6];
+                                        }
+                                    }
+                                    else
+                                    {
+                                        esCorrecto = false;
+                                        advertencia = Advertencia.SetsAdvertencias[7];
+                                    }
+                                }
+                                else
+                                {
+                                    esCorrecto = false;
+                                    advertencia = Advertencia.SetsAdvertencias[7];
+                                }
+                            }
+                            else
+                            {
+                                esCorrecto = false;
+                                advertencia = Advertencia.SetsAdvertencias[5];
+                            }
+                        }
+                        else
+                        {
+                            esCorrecto = false;
+                            advertencia = Advertencia.SetsAdvertencias[4];
+                        }
+                    }
+                    else
+                    {
+                        esCorrecto = false;
+                        advertencia = Advertencia.SetsAdvertencias[4];
+                    }
+                }
+            }
+            else if(linea.Length == 8)
+            {
+                if (linea[0].ToString().ToUpperInvariant() == "C")
+                {
+                    Columna++;
+
+                    if (linea[1].ToString().ToUpperInvariant() == "H")
+                    {
+                        Columna++;
+
+                        if (linea[2].ToString().ToUpperInvariant() == "R")
+                        {
+                            Columna++;
+
+                            if (linea[3].ToString().ToUpperInvariant() == "(")
+                            {
+                                Columna++;
+
+                                if (char.IsNumber(linea[4]))
+                                {
+                                    Columna++;
+                                    aux += linea[4];
+
+                                    if (char.IsNumber(linea[5]))
+                                    {
+                                        Columna++;
+                                        aux += linea[5];
+
+                                        if (char.IsNumber(linea[6]))
+                                        {
+                                            Columna++;
+                                            aux += linea[6];
+
+                                            if (linea[7].ToString().ToUpperInvariant() == ")")
+                                            {
+                                                Columna++;
+                                                esCorrecto = true;
+                                                subCadenaDrch = subCadenaDrch.Remove(0, 8);
+                                                return int.Parse(aux);
+                                            }
+                                            else
+                                            {
+                                                esCorrecto = false;
+                                                advertencia = Advertencia.SetsAdvertencias[6];
+                                            }
+                                        }
+                                        else
+                                        {
+                                            esCorrecto = false;
+                                            advertencia = Advertencia.SetsAdvertencias[7];
+                                        }
+                                    }
+                                    else
+                                    {
+                                        esCorrecto = false;
+                                        advertencia = Advertencia.SetsAdvertencias[7];
+                                    }
+                                }
+                                else
+                                {
+                                    esCorrecto = false;
+                                    advertencia = Advertencia.SetsAdvertencias[7];
+                                }
+                            }
+                            else
+                            {
+                                esCorrecto = false;
+                                advertencia = Advertencia.SetsAdvertencias[5];
+                            }
+                        }
+                        else
+                        {
+                            esCorrecto = false;
+                            advertencia = Advertencia.SetsAdvertencias[4];
+                        }
+                    }
+                    else
+                    {
+                        esCorrecto = false;
+                        advertencia = Advertencia.SetsAdvertencias[4];
+                    }
+                }
+                else
+                {
+                    esCorrecto = false;
+                    advertencia = Advertencia.SetsAdvertencias[4];
+                }
+            }
+
+            return -1;
+        }
+
 
         //--------------------------LECTURA VERIFICACIÓN GENERAL DEL ARCHIVO----------------------------------------
 
@@ -118,7 +287,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
         /// <param name="advertencia">Cadena que contiene el mensaje que se le mostrará al usuario final del estado del archivo</param>
         public bool Verificar(string rutaArchivo, ref string advertencia)
         {
-            using(var file = new FileStream(rutaArchivo,FileMode.Open))
+            using (var file = new FileStream(rutaArchivo, FileMode.Open))
             {
                 using (var reader = new StreamReader(file, Encoding.UTF8))
                 {
@@ -132,7 +301,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
                 }
             }
 
-            if (Contenido.ToUpper().Contains("SETS") )
+            if (Contenido.ToUpper().Contains("SETS"))
             {
                 if (Contenido.ToUpper().Contains("TOKENS"))
                 {
@@ -140,19 +309,19 @@ namespace ProyectoFinal_RicardoChian.Fase1
                     {
                         if (Contenido.ToUpper().Contains("ERROR"))
                         {
-                            
-                            if (AnalizarSets(Contenido.Substring(Contenido.ToUpper().IndexOf("SETS"), (Contenido.ToUpper().IndexOf("TOKENS") - Contenido.ToUpper().IndexOf("SETS"))),ref advertencia))
+
+                            if (AnalizarSets(Contenido.Substring(Contenido.ToUpper().IndexOf("SETS"), (Contenido.ToUpper().IndexOf("TOKENS") - Contenido.ToUpper().IndexOf("SETS"))), ref advertencia))
                             {
                                 //Aquí se le quita la parte de SETS a todo el texto
                                 Contenido = Contenido.Remove(Contenido.ToUpper().IndexOf("SETS"), (Contenido.ToUpper().IndexOf("TOKENS") - Contenido.ToUpper().IndexOf("SETS")));
+
+                                //Aquí empieza el análisis de los TOKENS
 
                             }
                             else
                             {
                                 return false;
                             }
-
-
                         }
                         else
                         {
@@ -193,7 +362,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
                 Fila = 0;
             }
 
-            lineas.RemoveAt(lineas.Count-1);
+            lineas.RemoveAt(lineas.Count - 1);
 
             foreach (var linea in lineas)
             {
@@ -202,7 +371,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
                 Columna = 0;
 
                 //Si está vacío verificar que la primer línea de la sección de SETS sea la palabra definidora de la sección (SETES)
-                if (Sets.Count == 0) 
+                if (Sets.Count == 0)
                 {
                     lineaAux = RemoverTodosEspacios(linea.Trim('\r'));
 
@@ -220,12 +389,12 @@ namespace ProyectoFinal_RicardoChian.Fase1
                         var subIzq = string.Empty;
                         var subDrch = string.Empty;
 
-                        if (lineaAux.Contains("="))
+                        if (lineaAux.Contains("=") && RemoverEspaciosLaterales(lineaAux) != "")
                         {
                             VerificadorIgual(linea, ref subIzq, ref subDrch);
 
                             //si tiene espacio es un error en el nombre del SET
-                            if (RemoverEspaciosLaterales(subIzq).Contains(" ")) 
+                            if (RemoverEspaciosLaterales(subIzq).Contains(" "))
                             {
                                 var auxIzq = subIzq.TrimStart();
 
@@ -238,10 +407,140 @@ namespace ProyectoFinal_RicardoChian.Fase1
                             else
                             {
                                 var setAnalizado = RemoverEspaciosLaterales(subIzq); //Ejemplo LETRA, DIGITO, CHARSET
-                                Sets.Add(setAnalizado, null);
+                                Sets.Add(setAnalizado, new List<string>());
 
+                                Columna += linea.IndexOf('=') + 1;
+                                Columna += subDrch.Length - subDrch.TrimStart().Length;
 
+                                subDrch = RemoverEspaciosLaterales(subDrch);
 
+                                //Acá se empieza a anlizar la definición de los SETS
+
+                                while (subDrch.Length >= 3)
+                                {
+                                    if (subDrch[0] != '\'' && subDrch[0].ToString().ToUpperInvariant() != "C" && subDrch[0] != '+' && subDrch[0] != '.')
+                                    {
+                                        //Es porque hubo un error
+                                        advertencia = Advertencia.SetsAdvertencias[2];
+                                        return false;
+                                    }
+                                    else if (subDrch[0] == '\'')
+                                    {
+                                        var esCorrecto = false;
+                                        var caracter = VeficadorComillasLetra(subDrch.Substring(0, 3), ref esCorrecto);
+
+                                        if (esCorrecto)
+                                        {
+                                            Sets[setAnalizado].Add(caracter.ToString());
+                                            subDrch = subDrch.Remove(0, 3);
+                                            Columna += 3;
+                                        }
+                                    }
+                                    else if (subDrch[0] == '.')
+                                    {
+                                        if (subDrch[0 + 1] != '.')
+                                        {
+                                            //Error de puntos suspensivos de rango
+                                            Columna++;
+                                            advertencia = Advertencia.SetsAdvertencias[3];
+                                            return false;
+                                        }
+                                        else
+                                        {
+
+                                            Columna += 2;
+                                            Sets[setAnalizado].Add("..");
+                                            subDrch = subDrch.Remove(0, 2);
+                                        }
+                                    }
+                                    else if (subDrch[0] == '+')
+                                    {
+                                        Columna++;
+                                        subDrch = subDrch.Remove(0, 1);
+                                    }
+                                    else if (subDrch[0].ToString().ToUpperInvariant() == "C")
+                                    {
+                                        var numRango = -1;
+                                        var esCorrecto = false;
+
+                                        if(subDrch.Contains(")"))
+                                        {
+                                            var aux = subDrch.Substring(0,subDrch.IndexOf(')')+1);
+
+                                            if (aux.Length == 7 || aux.Length == 8)
+                                            {
+                                                numRango = VerificadorChars(aux, ref subDrch, ref esCorrecto, ref advertencia);
+
+                                                if (esCorrecto != true)
+                                                {
+                                                    return esCorrecto;
+                                                }
+
+                                                Sets[setAnalizado].Add(char.ConvertFromUtf32(numRango));
+                                            }
+                                            else
+                                            {
+                                                advertencia = Advertencia.SetsAdvertencias[4];
+                                                Columna = -1;
+                                                return false;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            advertencia = Advertencia.SetsAdvertencias[6];
+                                            Columna= - 1;
+                                            return false;
+                                        }
+                                    }
+                                }
+                                if (Sets[setAnalizado].Contains(".."))
+                                {
+                                    while (Sets[setAnalizado].Contains(".."))
+                                    {
+                                        var caracterInicio = char.Parse(Sets[setAnalizado][Sets[setAnalizado].IndexOf("..") - 1]);
+                                        var caracterFinal = char.Parse(Sets[setAnalizado][Sets[setAnalizado].IndexOf("..") + 1]);
+                                        
+                                        if (char.IsNumber(caracterInicio) && char.IsNumber(caracterFinal))
+                                        {
+                                            if (caracterInicio < caracterFinal)
+                                            {
+                                                for (int i = caracterInicio + 1; i < caracterFinal; i++)
+                                                {
+                                                    Sets[setAnalizado].Add(char.ConvertFromUtf32(i));
+                                                }
+                                            }
+                                            else
+                                            {
+                                                for (int i = caracterFinal + 1; i < caracterInicio; i++)
+                                                {
+                                                    Sets[setAnalizado].Add(char.ConvertFromUtf32(i));
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var inicio = Convert.ToInt32(caracterInicio);
+                                            var final = Convert.ToInt32(caracterFinal);
+
+                                            if (inicio < final)
+                                            {
+                                                for (int i = inicio + 1; i < final; i++)
+                                                {
+                                                    Sets[setAnalizado].Add(char.ConvertFromUtf32(i));
+                                                }
+                                            }
+                                            else
+                                            {
+                                                for (int i = final + 1; i < inicio; i++)
+                                                {
+                                                    Sets[setAnalizado].Add(char.ConvertFromUtf32(i));
+                                                }
+                                            }
+                                        }
+
+                                        Sets[setAnalizado].RemoveAt(Sets[setAnalizado].IndexOf(".."));
+                                    }
+                                }
                             }
                         }
                         else //ERROR EN LA LÍNEA PORQUE NO CONTIENE UN SIGNO IGUAL
@@ -252,10 +551,9 @@ namespace ProyectoFinal_RicardoChian.Fase1
                         }
                     }
                 }
-
             }
 
-            return false;
+            return true;
         }
 
 
