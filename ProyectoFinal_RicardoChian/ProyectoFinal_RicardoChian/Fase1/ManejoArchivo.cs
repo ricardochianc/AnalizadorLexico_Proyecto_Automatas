@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net.Configuration;
@@ -70,7 +71,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
         /// </summary>
         /// <param name="cadenaAnalizada">Cadena de longitud de 3 caracteres</param>
         /// <returns></returns>
-        private char VeficadorComillasLetra(string cadenaAnalizada, ref bool esCorrecto)
+        private char VerificadorComillasLetra(string cadenaAnalizada, ref bool esCorrecto)
         {
             var caracter = '¬';
             esCorrecto = false;
@@ -277,6 +278,46 @@ namespace ProyectoFinal_RicardoChian.Fase1
             return -1;
         }
 
+        private bool VerificadorTokens(string subcadenaIzquierda, ref string advertencia, ref int numeroToken)
+        {
+            var EsCorrecto = false;
+
+            Columna = subcadenaIzquierda.Length - subcadenaIzquierda.TrimStart().Length;
+
+            subcadenaIzquierda = subcadenaIzquierda.TrimStart();
+            subcadenaIzquierda = subcadenaIzquierda.TrimEnd();
+
+            if (subcadenaIzquierda.Substring(0,5).ToUpperInvariant() == "TOKEN")
+            {
+                if (subcadenaIzquierda.Substring(0, 6).ToUpperInvariant() == "TOKEN ")
+                {
+                    subcadenaIzquierda = subcadenaIzquierda.Remove(0, 6);
+
+                    subcadenaIzquierda = subcadenaIzquierda.TrimStart();
+                    subcadenaIzquierda = subcadenaIzquierda.TrimEnd();
+
+                    if (int.TryParse(subcadenaIzquierda, out numeroToken))
+                    {
+                        EsCorrecto = true;
+                    }
+                }
+                else
+                {
+                    //debe de existir al menos un espacio entre la palabra token y el número de TOKEN
+                    advertencia = Advertencia.tokensAdvertencias[4];
+                    Columna += 5;
+                }
+            }
+            else
+            {
+                //La definición de la palabra TOKEN está mala
+                advertencia = Advertencia.tokensAdvertencias[3];
+            }
+
+            
+
+            return EsCorrecto;
+        }
 
         //--------------------------LECTURA VERIFICACIÓN GENERAL DEL ARCHIVO----------------------------------------
 
@@ -316,6 +357,15 @@ namespace ProyectoFinal_RicardoChian.Fase1
                                 Contenido = Contenido.Remove(Contenido.ToUpper().IndexOf("SETS"), (Contenido.ToUpper().IndexOf("TOKENS") - Contenido.ToUpper().IndexOf("SETS")));
 
                                 //Aquí empieza el análisis de los TOKENS
+                                if(AnalizarTokens(Contenido.Substring(Contenido.ToUpper().IndexOf("TOKENS"), (Contenido.ToUpper().IndexOf("ACTIONS") - Contenido.ToUpper().IndexOf("TOKENS"))), ref advertencia))
+                                {
+
+                                }
+                                else
+                                {
+                                    return false;
+                                }
+
 
                             }
                             else
@@ -407,6 +457,14 @@ namespace ProyectoFinal_RicardoChian.Fase1
                             else
                             {
                                 var setAnalizado = RemoverEspaciosLaterales(subIzq); //Ejemplo LETRA, DIGITO, CHARSET
+
+                                if (Sets.ContainsKey(setAnalizado))
+                                {
+                                    advertencia = Advertencia.SetsAdvertencias[8];
+                                    Columna = -1;
+                                    return false;
+                                }
+
                                 Sets.Add(setAnalizado, new List<string>());
 
                                 Columna += linea.IndexOf('=') + 1;
@@ -414,7 +472,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
 
                                 subDrch = RemoverEspaciosLaterales(subDrch);
 
-                                //Acá se empieza a anlizar la definición de los SETS
+                                //Acá se empieza a anlizar la definición de los SETS-------------------------------------------------------------------------
 
                                 while (subDrch.Length >= 3)
                                 {
@@ -427,13 +485,20 @@ namespace ProyectoFinal_RicardoChian.Fase1
                                     else if (subDrch[0] == '\'')
                                     {
                                         var esCorrecto = false;
-                                        var caracter = VeficadorComillasLetra(subDrch.Substring(0, 3), ref esCorrecto);
+                                        var caracter = VerificadorComillasLetra(subDrch.Substring(0, 3), ref esCorrecto);
 
                                         if (esCorrecto)
                                         {
                                             Sets[setAnalizado].Add(caracter.ToString());
                                             subDrch = subDrch.Remove(0, 3);
                                             Columna += 3;
+                                        }
+                                        else
+                                        {
+                                            //Error de comillas
+                                            advertencia = Advertencia.SetsAdvertencias[9];
+                                            Columna++;
+                                            return esCorrecto;
                                         }
                                     }
                                     else if (subDrch[0] == '.')
@@ -493,6 +558,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
                                         }
                                     }
                                 }
+                                //Se crean RANGOS------------------------------------------------------------------------------------------------------------
                                 if (Sets[setAnalizado].Contains(".."))
                                 {
                                     while (Sets[setAnalizado].Contains(".."))
@@ -556,7 +622,112 @@ namespace ProyectoFinal_RicardoChian.Fase1
             return true;
         }
 
+        //----------------------------------------TOKENS------------------------------------------------------------
 
+        private bool AnalizarTokens(string contenido, ref string advertencia)
+        {
+            Fila--;
+
+            var lineas = contenido.Split('\n').ToList();
+
+            lineas.RemoveAt(lineas.Count-1);
+
+            foreach (var linea in lineas)
+            {
+                var lineaAux = string.Empty;
+                Fila++;
+                Columna = 0;
+
+                if (Tokens.Count == 0)
+                {
+                    lineaAux = RemoverEspaciosLaterales(linea.Trim('\r'));
+
+                    if (lineaAux.ToUpperInvariant() == "TOKENS")
+                    {
+                        Tokens.Add(lineaAux,new List<string>());
+                    }
+                }
+                else
+                {
+                    lineaAux = RemoverEspaciosLaterales(linea).Trim('\r');
+
+                    if (lineaAux != "")
+                    {
+                        var subIzq = string.Empty;
+                        var subDrch = string.Empty;
+
+                        if(lineaAux.Contains("=") && RemoverEspaciosLaterales(lineaAux) != "")
+                        {
+                            VerificadorIgual(linea, ref subIzq, ref subDrch); //Aquí se devuelven las cadenas izquierda y derecha del token
+
+                            var tokenAnalizado = -1;
+
+                            if (VerificadorTokens(subIzq, ref advertencia, ref tokenAnalizado))
+                            {
+                                if (Tokens.ContainsKey(tokenAnalizado.ToString()))
+                                {
+                                    advertencia = Advertencia.tokensAdvertencias[5];
+                                    Columna = -1;
+                                    return false;
+                                }
+
+                                Tokens.Add(tokenAnalizado.ToString(), new List<string>());
+
+                                Columna = linea.IndexOf('=') + 1;
+                                Columna += subDrch.Length - subDrch.TrimStart().Length;
+
+                                subDrch = RemoverEspaciosLaterales(subDrch);
+
+                                //ACÁ SE EMPIEZA A ANALIZAR LOS VALORES DEL TOKEN
+                                while (subDrch.Length > 0)
+                                {
+                                    var palabraSet = string.Empty;
+
+                                    if (subDrch[0] == '\'') //Si el primer caracter analizado es una comilla simple...
+                                    {
+                                        var esCorrecto = false;
+                                        var caracter = VerificadorComillasLetra(subDrch.Substring(0, 3), ref esCorrecto);
+
+                                        if (esCorrecto)
+                                        {
+                                            Sets[tokenAnalizado.ToString()].Add(caracter.ToString());
+                                            subDrch = subDrch.Remove(0, 3);
+                                            Columna += 3;
+                                        }
+                                        else
+                                        {
+                                            //error de comillas
+                                            advertencia = Advertencia.tokensAdvertencias[8];
+                                            Columna++;
+                                            return esCorrecto;
+                                        }
+                                    }
+                                    else if (subDrch[0] == ' ' && palabraSet == string.Empty)
+                                    {
+                                        subDrch = subDrch.Remove(0, 1);
+                                        Columna++;
+                                    }
+                                }
+
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else //ERROR EN LA LÍNEA, PORQUE NO CONTIENE UN SIGNO IGUAL
+                        {
+                            advertencia = Advertencia.tokensAdvertencias[1];
+                            Columna  = - 1;
+                            return false;
+                        }
+                    }
+                }
+            }
+
+
+            return true;
+        }
         //----------------------------------------ERROR-------------------------------------------------------------
 
         /// <summary>

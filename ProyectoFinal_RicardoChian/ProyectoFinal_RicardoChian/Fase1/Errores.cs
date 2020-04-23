@@ -28,12 +28,26 @@ namespace ProyectoFinal_RicardoChian.Fase1
 
             SetsAdvertencias.Add("El nombre definidor del SET contiene un espacio de por medio"); //0
             SetsAdvertencias.Add("El set no contiene un signo igual que le de definición, formato: NOMBRE = DEFINICIÓN"); //1
-            SetsAdvertencias.Add("No existe comilla simple de inicio"); //2
+            SetsAdvertencias.Add("No existe comilla simple de apertura"); //2
             SetsAdvertencias.Add("El rango debe de definirse con dos puntos consecutivos");//3
             SetsAdvertencias.Add("Error en la definición de la función CHAR en el SET");//4
             SetsAdvertencias.Add("La función CHR debe de tener paréntesis de apertura");//5
             SetsAdvertencias.Add("La función CHR debe de tener paréntesis de cierre");//6
             SetsAdvertencias.Add("Error en la función numérica que definen los CHR"); //7
+            SetsAdvertencias.Add("Ya existe un SET definido con ese nombre"); //8
+            SetsAdvertencias.Add("El formato de comillas está malo"); //9
+
+            tokensAdvertencias = new List<string>();
+
+            tokensAdvertencias.Add("El nombre definidor del TOKEN contiene un espacio de por medio"); //0
+            tokensAdvertencias.Add("El TOKEN no contiene un signo igual que le de definición, formato: TOKEN # = DEFINICIÓN"); //1
+            tokensAdvertencias.Add("Ya existe un número de TOKEN igual");//2
+            tokensAdvertencias.Add("No debe de existir algún otro tipo de caracter en la definición del TOKEN");//3
+            tokensAdvertencias.Add("Debe de existir al menos un espacio entre la palabra TOKEN y el número que se le asigna");//4
+            tokensAdvertencias.Add("El número de token ya fue asignado");//5
+            tokensAdvertencias.Add("No existe comilla simple de apertura"); //6
+            tokensAdvertencias.Add("No existe comillas simples de cierre"); //7
+            tokensAdvertencias.Add("El formato de comillas está malo, debe de existir un único caracter encerrado en comillas"); //8
         }
     }
 }
