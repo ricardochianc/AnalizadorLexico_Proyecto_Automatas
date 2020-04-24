@@ -390,6 +390,12 @@ namespace ProyectoFinal_RicardoChian.Fase1
                                     if (AnalizarActions(Contenido.Substring(Contenido.ToUpper().IndexOf("ACTIONS"), (Contenido.ToUpper().IndexOf("ERROR") - Contenido.ToUpper().IndexOf("ACTIONS"))), ref advertencia))
                                     {
                                         Contenido = Contenido.Remove(Contenido.ToUpper().IndexOf("ACTIONS"), (Contenido.ToUpper().IndexOf("ERROR") - Contenido.ToUpper().IndexOf("ACTIONS")));
+
+                                        if(AnalizadorApartadoError(Contenido))
+                                        {
+                                            advertencia = Advertencia.AdvertenciasGenerales[0];
+                                            return true;
+                                        }
                                     }
                                     else
                                     {
@@ -942,8 +948,10 @@ namespace ProyectoFinal_RicardoChian.Fase1
         /// </summary>
         /// <param name="linea"></param>
         /// <returns>Asigna el valor de ERROR</returns>
-        private bool AnalizadorApartadoError(string linea)
+        private bool AnalizadorApartadoError(string contenido)
         {
+            var linea = contenido.Split('\n')[0].Trim('\r');
+
             var subCadenaIzq = "";
             var subCadenaDrch = "";
 

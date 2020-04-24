@@ -28,32 +28,45 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.gbx_CargarArchivo = new System.Windows.Forms.GroupBox();
+            this.btn_continuar = new System.Windows.Forms.PictureBox();
             this.lb_NombreArchivo = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btn_CargarArchivo = new System.Windows.Forms.PictureBox();
             this.openFileDialog_archivo = new System.Windows.Forms.OpenFileDialog();
-            this.btn_continuar = new System.Windows.Forms.PictureBox();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btn_CargarArchivo)).BeginInit();
+            this.gbx_CargarArchivo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btn_continuar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btn_CargarArchivo)).BeginInit();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // gbx_CargarArchivo
             // 
-            this.groupBox1.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox1.Controls.Add(this.btn_continuar);
-            this.groupBox1.Controls.Add(this.lb_NombreArchivo);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.btn_CargarArchivo);
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(670, 430);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "1. Cargar archivo";
+            this.gbx_CargarArchivo.BackColor = System.Drawing.Color.Transparent;
+            this.gbx_CargarArchivo.Controls.Add(this.btn_continuar);
+            this.gbx_CargarArchivo.Controls.Add(this.lb_NombreArchivo);
+            this.gbx_CargarArchivo.Controls.Add(this.label1);
+            this.gbx_CargarArchivo.Controls.Add(this.btn_CargarArchivo);
+            this.gbx_CargarArchivo.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbx_CargarArchivo.ForeColor = System.Drawing.Color.White;
+            this.gbx_CargarArchivo.Location = new System.Drawing.Point(12, 12);
+            this.gbx_CargarArchivo.Name = "gbx_CargarArchivo";
+            this.gbx_CargarArchivo.Size = new System.Drawing.Size(670, 430);
+            this.gbx_CargarArchivo.TabIndex = 0;
+            this.gbx_CargarArchivo.TabStop = false;
+            this.gbx_CargarArchivo.Text = "1. Cargar archivo";
+            // 
+            // btn_continuar
+            // 
+            this.btn_continuar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_continuar.Image = global::ProyectoFinal_RicardoChian.Properties.Resources.ContinuarVerde;
+            this.btn_continuar.Location = new System.Drawing.Point(307, 238);
+            this.btn_continuar.Name = "btn_continuar";
+            this.btn_continuar.Size = new System.Drawing.Size(70, 37);
+            this.btn_continuar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.btn_continuar.TabIndex = 3;
+            this.btn_continuar.TabStop = false;
+            this.btn_continuar.Visible = false;
+            this.btn_continuar.Click += new System.EventHandler(this.btn_continuar_Click);
             // 
             // lb_NombreArchivo
             // 
@@ -93,19 +106,6 @@
             this.openFileDialog_archivo.Filter = "Archivos de texto|*.txt";
             this.openFileDialog_archivo.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog_archivo_FileOk);
             // 
-            // btn_continuar
-            // 
-            this.btn_continuar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_continuar.Image = global::ProyectoFinal_RicardoChian.Properties.Resources.ContinuarVerde;
-            this.btn_continuar.Location = new System.Drawing.Point(307, 238);
-            this.btn_continuar.Name = "btn_continuar";
-            this.btn_continuar.Size = new System.Drawing.Size(70, 37);
-            this.btn_continuar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.btn_continuar.TabIndex = 3;
-            this.btn_continuar.TabStop = false;
-            this.btn_continuar.Visible = false;
-            this.btn_continuar.Click += new System.EventHandler(this.btn_continuar_Click);
-            // 
             // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -113,7 +113,7 @@
             this.BackgroundImage = global::ProyectoFinal_RicardoChian.Properties.Resources.FondoAzul;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(694, 456);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.gbx_CargarArchivo);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -121,17 +121,17 @@
             this.Name = "Home";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Analizador léxico";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btn_CargarArchivo)).EndInit();
+            this.gbx_CargarArchivo.ResumeLayout(false);
+            this.gbx_CargarArchivo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btn_continuar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btn_CargarArchivo)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox gbx_CargarArchivo;
         private System.Windows.Forms.PictureBox btn_CargarArchivo;
         private System.Windows.Forms.Label lb_NombreArchivo;
         private System.Windows.Forms.Label label1;

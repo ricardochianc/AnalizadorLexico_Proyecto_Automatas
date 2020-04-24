@@ -21,6 +21,8 @@ namespace ProyectoFinal_RicardoChian
 
         private void btn_CargarArchivo_Click(object sender, EventArgs e)
         {
+            Analizador = null;
+            Analizador = new AnalizadorLexico();
             openFileDialog_archivo.ShowDialog();
         }
 
@@ -35,38 +37,46 @@ namespace ProyectoFinal_RicardoChian
         {
             var mensaje = string.Empty;
 
-            if (Analizador.VerificarArchivo(ref mensaje))
+            try
             {
-                //Mostrar MessageBox y cambiar pantalla
-                MessageBox.Show(mensaje, "Infomación", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (Analizador.VerificarArchivo(ref mensaje))
+                {
+                    //Mostrar MessageBox y cambiar pantalla
+                    MessageBox.Show(mensaje, "Infomación", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                    gbx_CargarArchivo.Hide();
+                }
+                else
+                {
+                    if (Analizador.ManejadorArchivo.Fila != -1 && Analizador.ManejadorArchivo.Columna != -1)
+                    {
+                        //Mostrar MessageBox y limpiar pantalla y volver al inicio
+                        MessageBox.Show(mensaje + "\nFila: " + Analizador.ManejadorArchivo.Fila + "\nColumna: " + Analizador.ManejadorArchivo.Columna, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        lb_NombreArchivo.Text = string.Empty;
+                        btn_continuar.Hide();
+                    }
+                    else if (Analizador.ManejadorArchivo.Fila == -1)
+                    {
+                        //Mostrar MessageBox y limpiar pantalla y volver al inicio
+                        MessageBox.Show(mensaje + "\nFila: No determinada" + "\nColumna: " + Analizador.ManejadorArchivo.Columna, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        lb_NombreArchivo.Text = string.Empty;
+                        btn_continuar.Hide();
+                    }
+                    else if (Analizador.ManejadorArchivo.Columna == -1)
+                    {
+                        //Mostrar MessageBox y limpiar pantalla y volver al inicio
+                        MessageBox.Show(mensaje + "\nFila: " + Analizador.ManejadorArchivo.Fila + "\nColumna: No determinada", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        lb_NombreArchivo.Text = string.Empty;
+                        btn_continuar.Hide();
+                    }
+                }
             }
-            else
+            catch (Exception exception)
             {
-                if (Analizador.ManejadorArchivo.Fila != -1 && Analizador.ManejadorArchivo.Columna != -1)
-                {
-                    //Mostrar MessageBox y limpiar pantalla y volver al inicio
-                    MessageBox.Show(mensaje + "\nFila: " + Analizador.ManejadorArchivo.Fila + "\nColumna: " + Analizador.ManejadorArchivo.Columna, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    lb_NombreArchivo.Text = string.Empty;
-                    btn_continuar.Hide();
-                }
-                else if(Analizador.ManejadorArchivo.Fila == -1)
-                {
-                    //Mostrar MessageBox y limpiar pantalla y volver al inicio
-                    MessageBox.Show(mensaje + "\nFila: No determinada" + "\nColumna: " + Analizador.ManejadorArchivo.Columna, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    lb_NombreArchivo.Text = string.Empty;
-                    btn_continuar.Hide();
-                }
-                else if(Analizador.ManejadorArchivo.Columna == -1)
-                {
-                    //Mostrar MessageBox y limpiar pantalla y volver al inicio
-                    MessageBox.Show(mensaje + "\nFila: " + Analizador.ManejadorArchivo.Fila + "\nColumna: No determinada", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    lb_NombreArchivo.Text = string.Empty;
-                    btn_continuar.Hide();
-                }
-                Analizador = null;
-                Analizador = new AnalizadorLexico();
-                
+                //Mostrar MessageBox y limpiar pantalla y volver al inicio
+                MessageBox.Show(exception.Message + "; " + exception.Source + "\nFila: No determinada" + "\nColumna: No determinada", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                lb_NombreArchivo.Text = string.Empty;
+                btn_continuar.Hide();
             }
         }
     }
