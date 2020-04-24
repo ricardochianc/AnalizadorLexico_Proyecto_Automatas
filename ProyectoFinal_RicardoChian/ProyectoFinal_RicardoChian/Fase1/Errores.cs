@@ -50,6 +50,15 @@ namespace ProyectoFinal_RicardoChian.Fase1
             tokensAdvertencias.Add("El formato de comillas está malo, debe de existir un único caracter encerrado en comillas"); //8
             tokensAdvertencias.Add("La expresión no forma parte de algún SET definido previamente"); //9 nuevos
             tokensAdvertencias.Add("El caracter no forma parte de algún SET definido previamente"); //10 nuveos
+
+            ActionsAdvertencias = new List<string>();
+
+            ActionsAdvertencias.Add("No deben de existir espacios en la definición de la función del ACTION");//0
+            ActionsAdvertencias.Add("La función debe de tener paréntesis de apertura y de cierre, de manera contigua y sin espacios \"()\"");//1
+            ActionsAdvertencias.Add("La función no contiene llave de inicio \"{\"");//2
+            ActionsAdvertencias.Add("El número que se le asignó al ACTIONS ya se encuentra utilizado");//3
+            ActionsAdvertencias.Add("La definición del ACTION debe de ser un número");//4
+            ActionsAdvertencias.Add("El ACTION debe de estar definido dentro de comillas simples");//5
         }
     }
 }

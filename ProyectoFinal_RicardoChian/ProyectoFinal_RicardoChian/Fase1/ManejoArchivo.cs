@@ -98,11 +98,11 @@ namespace ProyectoFinal_RicardoChian.Fase1
         {
             if (linea.Contains('='))
             {
-                var posicion = linea.IndexOf('=')+1;
+                var posicion = linea.IndexOf('=') + 1;
 
                 subCadenaIzq = linea.Split('=')[0];
 
-                subCadenaDrch = linea.Substring(posicion, (linea.Length-posicion));
+                subCadenaDrch = linea.Substring(posicion, (linea.Length - posicion));
 
                 return true;
             }
@@ -186,7 +186,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
                     }
                 }
             }
-            else if(linea.Length == 8)
+            else if (linea.Length == 8)
             {
                 if (linea[0].ToString().ToUpperInvariant() == "C")
                 {
@@ -287,7 +287,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
             subcadenaIzquierda = subcadenaIzquierda.TrimStart();
             subcadenaIzquierda = subcadenaIzquierda.TrimEnd();
 
-            if (subcadenaIzquierda.Substring(0,5).ToUpperInvariant() == "TOKEN")
+            if (subcadenaIzquierda.Substring(0, 5).ToUpperInvariant() == "TOKEN")
             {
                 if (subcadenaIzquierda.Substring(0, 6).ToUpperInvariant() == "TOKEN ")
                 {
@@ -314,7 +314,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
                 advertencia = Advertencia.tokensAdvertencias[3];
             }
 
-            
+
 
             return EsCorrecto;
         }
@@ -382,9 +382,20 @@ namespace ProyectoFinal_RicardoChian.Fase1
                                 Contenido = Contenido.Remove(Contenido.ToUpper().IndexOf("SETS"), (Contenido.ToUpper().IndexOf("TOKENS") - Contenido.ToUpper().IndexOf("SETS")));
 
                                 //Aquí empieza el análisis de los TOKENS
-                                if(AnalizarTokens(Contenido.Substring(Contenido.ToUpper().IndexOf("TOKENS"), (Contenido.ToUpper().IndexOf("ACTIONS") - Contenido.ToUpper().IndexOf("TOKENS"))), ref advertencia))
+                                if (AnalizarTokens(Contenido.Substring(Contenido.ToUpper().IndexOf("TOKENS"), (Contenido.ToUpper().IndexOf("ACTIONS") - Contenido.ToUpper().IndexOf("TOKENS"))), ref advertencia))
                                 {
+                                    //Se quita la parte de TOKENS y se procede a analizar los ACTIONS
                                     Contenido = Contenido.Remove(Contenido.ToUpper().IndexOf("TOKENS"), (Contenido.ToUpper().IndexOf("ACTIONS") - Contenido.ToUpper().IndexOf("TOKENS")));
+
+                                    if (AnalizarActions(Contenido.Substring(Contenido.ToUpper().IndexOf("ACTIONS"), (Contenido.ToUpper().IndexOf("ERROR") - Contenido.ToUpper().IndexOf("ACTIONS"))), ref advertencia))
+                                    {
+                                        Contenido = Contenido.Remove(Contenido.ToUpper().IndexOf("ACTIONS"), (Contenido.ToUpper().IndexOf("ERROR") - Contenido.ToUpper().IndexOf("ACTIONS")));
+                                    }
+                                    else
+                                    {
+                                        return false;
+                                    }
+
                                 }
                                 else
                                 {
@@ -551,9 +562,9 @@ namespace ProyectoFinal_RicardoChian.Fase1
                                         var numRango = -1;
                                         var esCorrecto = false;
 
-                                        if(subDrch.Contains(")"))
+                                        if (subDrch.Contains(")"))
                                         {
-                                            var aux = subDrch.Substring(0,subDrch.IndexOf(')')+1);
+                                            var aux = subDrch.Substring(0, subDrch.IndexOf(')') + 1);
 
                                             if (aux.Length == 7 || aux.Length == 8)
                                             {
@@ -576,7 +587,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
                                         else
                                         {
                                             advertencia = Advertencia.SetsAdvertencias[6];
-                                            Columna= - 1;
+                                            Columna = -1;
                                             return false;
                                         }
                                     }
@@ -588,7 +599,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
                                     {
                                         var caracterInicio = char.Parse(Sets[setAnalizado][Sets[setAnalizado].IndexOf("..") - 1]);
                                         var caracterFinal = char.Parse(Sets[setAnalizado][Sets[setAnalizado].IndexOf("..") + 1]);
-                                        
+
                                         if (char.IsNumber(caracterInicio) && char.IsNumber(caracterFinal))
                                         {
                                             if (caracterInicio < caracterFinal)
@@ -646,13 +657,12 @@ namespace ProyectoFinal_RicardoChian.Fase1
         }
 
         //----------------------------------------TOKENS------------------------------------------------------------
-
         private bool AnalizarTokens(string contenido, ref string advertencia)
         {
-            
+
             var lineas = contenido.Split('\n').ToList();
 
-            lineas.RemoveAt(lineas.Count-1);
+            lineas.RemoveAt(lineas.Count - 1);
 
             foreach (var linea in lineas)
             {
@@ -666,7 +676,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
 
                     if (lineaAux.ToUpperInvariant() == "TOKENS")
                     {
-                        Tokens.Add(lineaAux,new List<string>());
+                        Tokens.Add(lineaAux, new List<string>());
                     }
                 }
                 else
@@ -678,7 +688,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
                         var subIzq = string.Empty;
                         var subDrch = string.Empty;
 
-                        if(lineaAux.Contains("=") && RemoverEspaciosLaterales(lineaAux) != "")
+                        if (lineaAux.Contains("=") && RemoverEspaciosLaterales(lineaAux) != "")
                         {
                             VerificadorIgual(linea, ref subIzq, ref subDrch); //Aquí se devuelven las cadenas izquierda y derecha del token
 
@@ -713,7 +723,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
 
                                         if (esCorrecto)
                                         {
-                                            if(VerificarExistencia(caracter.ToString()))
+                                            if (VerificarExistencia(caracter.ToString()))
                                             {
                                                 Tokens[tokenAnalizado.ToString()].Add(caracter.ToString());
                                                 subDrch = subDrch.Remove(0, 3);
@@ -740,7 +750,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
                                         subDrch = subDrch.Remove(0, 1);
                                         Columna++;
                                     }
-                                    else if(subDrch[0] == ' ' && palabraToken != string.Empty)
+                                    else if (subDrch[0] == ' ' && palabraToken != string.Empty)
                                     {
                                         Columna++;
 
@@ -761,21 +771,21 @@ namespace ProyectoFinal_RicardoChian.Fase1
                                         }
                                     }
                                     //AHORITA VER SI SON SIMBOLOS DE OPERACION GUARDARLOS DIRECTAMENTE EN LA LISTA DE TOKENS
-                                    else if(subDrch[0] == '|' || subDrch[0] == '.' || subDrch[0] == '(' || subDrch[0] == ')')
+                                    else if (subDrch[0] == '|' || subDrch[0] == '.' || subDrch[0] == '(' || subDrch[0] == ')')
                                     {
                                         Columna++;
                                         Tokens[tokenAnalizado.ToString()].Add("\'" + subDrch[0].ToString());
                                         subDrch = subDrch.Remove(0, 1);
                                     }
                                     //SI ES * O +, CONCATÁRSELO AL ÚLTIMO GUARDADO
-                                    else if(subDrch[0] == '*' || subDrch[0] == '+')
+                                    else if (subDrch[0] == '*' || subDrch[0] == '+')
                                     {
                                         Columna++;
                                         Tokens[tokenAnalizado.ToString()][Tokens[tokenAnalizado.ToString()].Count - 1] += subDrch[0];
                                         subDrch = subDrch.Remove(0, 1);
                                     }
                                     //SI ES OTRO CARACTER IR CONCATENÁNDOLO A LA palabraToken
-                                    else if(subDrch[0] != '\'' && subDrch[0] != ' ')
+                                    else if (subDrch[0] != '\'' && subDrch[0] != ' ')
                                     {
                                         Columna++;
                                         palabraToken += subDrch[0];
@@ -792,7 +802,7 @@ namespace ProyectoFinal_RicardoChian.Fase1
                         else //ERROR EN LA LÍNEA, PORQUE NO CONTIENE UN SIGNO IGUAL
                         {
                             advertencia = Advertencia.tokensAdvertencias[1];
-                            Columna  = - 1;
+                            Columna = -1;
                             return false;
                         }
                     }
@@ -802,6 +812,129 @@ namespace ProyectoFinal_RicardoChian.Fase1
 
             return true;
         }
+
+        //----------------------------------------ACTIONS----------------------------------------------------------
+        private bool AnalizarActions(string contenido, ref string advertencia)
+        {
+            var lineas = contenido.Split('\n').ToList();
+
+            lineas.RemoveAt(lineas.Count - 1);
+
+            var actionAnalizado = string.Empty;
+            var metodoEnProceso = false;
+            var corcheteEncontrado = false;
+
+            foreach (var linea in lineas)
+            {
+                var lineasAux = string.Empty;
+                
+                Fila++;
+                Columna = 0;
+
+                if (RemoverTodosEspacios(linea).Trim('\r') != "")
+                {
+                    if (Actions.Count == 0) //Se ingresa la primer palabra que separa la sección ACTIONS
+                    {
+                        lineasAux = RemoverEspaciosLaterales(linea.Trim('\r'));
+
+                        if (lineasAux.ToUpperInvariant() == "ACTIONS")
+                        {
+                            Actions.Add(lineasAux, new List<string>());
+                        }
+                    }
+                    else if (metodoEnProceso)
+                    {
+                        if (RemoverEspaciosLaterales(linea) != "")
+                        {
+                            var subIzq = string.Empty;
+                            var subDrch = string.Empty;
+
+                            if (Actions[actionAnalizado].Count == 0 && corcheteEncontrado == false)
+                            {
+                                lineasAux = RemoverEspaciosLaterales(linea);
+
+                                if (lineasAux != "{")
+                                {
+                                    advertencia = Advertencia.ActionsAdvertencias[2];
+                                    return false;
+                                }
+
+                                corcheteEncontrado = true;
+
+                            }
+                            else if (linea.Contains('='))
+                            {
+                                VerificadorIgual(linea, ref subIzq, ref subDrch);
+
+                                subIzq = RemoverTodosEspacios(subIzq);
+                                subDrch = RemoverTodosEspacios(subDrch).TrimEnd('\r');
+
+                                var num = 0;
+
+                                if (!int.TryParse(subIzq, out num))
+                                {
+                                    advertencia = Advertencia.ActionsAdvertencias[4];
+                                    Columna = -1;
+                                    return false;
+                                }
+
+                                if (!subDrch.Contains('\''))
+                                {
+                                    advertencia = Advertencia.ActionsAdvertencias[5];
+                                    Columna = -1;
+                                    return false;
+                                }
+
+                                if (Tokens.ContainsKey(num.ToString()))
+                                {
+                                    advertencia = Advertencia.ActionsAdvertencias[3];
+                                    Columna = -1;
+                                    return false;
+                                }
+
+                                Actions[actionAnalizado].Add(num + "|" + subDrch);
+                            }
+                            else if (linea.Contains('}'))
+                            {
+                                metodoEnProceso = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        lineasAux = linea.TrimStart();
+                        Columna = linea.Length - lineasAux.Length;
+
+                        lineasAux = RemoverEspaciosLaterales(lineasAux.TrimEnd('\r'));
+
+                        if (lineasAux.Contains(' '))
+                        {
+                            advertencia = Advertencia.ActionsAdvertencias[0];
+                            Columna += lineasAux.IndexOf(' ');
+                            return false;
+
+                        }
+                        else if (lineasAux.Contains("()"))
+                        {
+
+                            actionAnalizado = lineasAux;
+                            Actions.Add(actionAnalizado, new List<string>());
+                            metodoEnProceso = true;
+                        }
+                        else
+                        {
+                            //Error
+                            advertencia = Advertencia.ActionsAdvertencias[1];
+                            Columna = -1;
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
         //----------------------------------------ERROR-------------------------------------------------------------
 
         /// <summary>
