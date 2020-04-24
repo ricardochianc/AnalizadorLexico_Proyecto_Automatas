@@ -10,11 +10,13 @@ namespace ProyectoFinal_RicardoChian
     public class AnalizadorLexico
     {
         public ManejoArchivo ManejadorArchivo { get; set; }
+        private ExpresionPostfija Postfija { get; set; }
         public string Path { get; set; }
 
         public AnalizadorLexico()
         {
             ManejadorArchivo = new ManejoArchivo();
+            Postfija = new ExpresionPostfija();
         }
 
         public bool VerificarArchivo(ref string advertencia)
@@ -25,6 +27,11 @@ namespace ProyectoFinal_RicardoChian
             }
 
             return false;
+        }
+
+        public void GenerarExpresionRegular()
+        {
+
         }
     }
 }

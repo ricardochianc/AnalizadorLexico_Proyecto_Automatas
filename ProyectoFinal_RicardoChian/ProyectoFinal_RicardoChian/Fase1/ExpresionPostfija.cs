@@ -49,12 +49,16 @@ namespace ProyectoFinal_RicardoChian.Fase1
                         prioridad = 3;
                         break;
 
+                    case '+':
+                        prioridad = 3;
+                        break;
+
                     case '|':
-                        prioridad = 2;
+                        prioridad = 1;
                         break;
 
                     case '.':
-                        prioridad = 1;
+                        prioridad = 2;
                         break;
 
                     case '(':
@@ -71,12 +75,16 @@ namespace ProyectoFinal_RicardoChian.Fase1
                         prioridad = 4;
                         break;
 
+                    case '+':
+                        prioridad = 4;
+                        break;
+
                     case '|':
-                        prioridad = 2;
+                        prioridad = 1;
                         break;
 
                     case '.':
-                        prioridad = 1;
+                        prioridad = 2;
                         break;
 
                     case '(':
