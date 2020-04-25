@@ -47,7 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnalizadorLexico.cs" />
-    <Compile Include="Fase1\ArbolExpresiones.cs" />
+    <Compile Include="Fase1\Automata\ArbolExpresiones.cs" />
+    <Compile Include="Fase1\Automata\Estado.cs" />
+    <Compile Include="Fase1\Automata\Nodo.cs" />
     <Compile Include="Fase1\Errores.cs" />
     <Compile Include="Fase1\ExpresionPostfija.cs" />
     <Compile Include="Fase1\ManejoArchivo.cs" />
@@ -103,5 +105,6 @@
   <ItemGroup>
     <None Include="Resources\Análisis.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
