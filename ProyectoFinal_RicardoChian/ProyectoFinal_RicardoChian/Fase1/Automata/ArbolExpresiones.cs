@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace ProyectoFinal_RicardoChian.Fase1.Automata
 {
-    class ArbolExpresiones
+    public class ArbolExpresiones
     {
         private List<char> Operadores { get; set; }
         public Nodo Raiz { get; set; }
 
         //Lista que tendrá solo los nodos hoja, para que al momento de calcular los follow y
         //la tabla de transiciones sea más fácil y no hay que recorrer todo el árbol
-        private List<Nodo> Hojas { get; set; }
+        public List<Nodo> Hojas { get; set; }
 
         //Parte "izquierda" de la tabla de transiciones
         public List<Estado> Estados { get; set; }

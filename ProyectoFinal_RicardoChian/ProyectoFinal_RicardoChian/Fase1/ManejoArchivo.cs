@@ -729,18 +729,9 @@ namespace ProyectoFinal_RicardoChian.Fase1
 
                                         if (esCorrecto)
                                         {
-                                            if (VerificarExistencia(caracter.ToString()))
-                                            {
-                                                Tokens[tokenAnalizado.ToString()].Add(caracter.ToString());
-                                                subDrch = subDrch.Remove(0, 3);
-                                                Columna += 3;
-                                            }
-                                            else
-                                            {
-                                                advertencia = Advertencia.tokensAdvertencias[10];
-                                                Columna += 2;
-                                                return false;
-                                            }
+                                            Tokens[tokenAnalizado.ToString()].Add(caracter.ToString());
+                                            subDrch = subDrch.Remove(0, 3);
+                                            Columna += 3;
                                         }
                                         else
                                         {
