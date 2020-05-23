@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,7 +58,7 @@ namespace ProyectoFinal_RicardoChian
                             lb_ExpresionRegular.Text = Analizador.ExpresionRegular;
 
                             dgv_Sets.ColumnCount = 1;
-                            dgv_Sets.RowCount = Analizador.ManejadorArchivo.Sets.Count;
+                            dgv_Sets.RowCount = Analizador.ManejadorArchivo.Sets.Count + 10;
                             dgv_Sets.ForeColor = Color.Black;
 
                             var fila = 0;
@@ -74,7 +75,7 @@ namespace ProyectoFinal_RicardoChian
                             fila = 0;
 
                             dgtv_Tokens.ColumnCount = 1;
-                            dgtv_Tokens.RowCount = Analizador.ManejadorArchivo.Sets.Count + 1;
+                            dgtv_Tokens.RowCount = Analizador.ManejadorArchivo.Sets.Count + 10;
                             dgtv_Tokens.ForeColor = Color.Black;
 
                             foreach (var item in Analizador.ManejadorArchivo.Tokens)
@@ -132,7 +133,7 @@ namespace ProyectoFinal_RicardoChian
                 btn_continuar.Hide();
             }
 
-            
+
         }
 
         private void btn_continuarAutomata_Click(object sender, EventArgs e)
@@ -140,7 +141,7 @@ namespace ProyectoFinal_RicardoChian
             gbx_ResultadoAnalisis.Hide();
             gbx_Automata.Show();
 
-            dgv_Follows.Columns.Add("Nodo hoja","Nodo");
+            dgv_Follows.Columns.Add("Nodo hoja", "Nodo");
             dgv_Follows.Columns.Add("Follows", "Follows");
             dgv_Follows.RowCount = Analizador.Arbol.Hojas.Count;
             dgv_Follows.ForeColor = Color.Black;
@@ -149,7 +150,7 @@ namespace ProyectoFinal_RicardoChian
 
             foreach (var hoja in Analizador.Arbol.Hojas)
             {
-                dgv_Follows[0, fila].Value = hoja.NumNodo; 
+                dgv_Follows[0, fila].Value = hoja.NumNodo;
                 fila++;
             }
 
@@ -168,14 +169,14 @@ namespace ProyectoFinal_RicardoChian
                 {
                     dgv_Follows[1, fila].Value += "----";
                 }
-                fila ++;
+                fila++;
             }
 
             //---------------------------TABLA DE TRANSICIONES-----------------------------------------
 
             dgtv_Transiciones.Columns.Add("Estados", "Estados");
             dgtv_Transiciones.ForeColor = Color.Black;
-            
+
             foreach (var Key in Analizador.Arbol.TablaTransiciones.Keys)
             {
                 if (Analizador.DiccionarioSustitucion.ContainsKey(Key))
@@ -197,7 +198,7 @@ namespace ProyectoFinal_RicardoChian
                 {
                     dgtv_Transiciones[0, fila].Value += "> ";
                     dgtv_Transiciones[0, fila].Style.BackColor = Color.CornflowerBlue;
-                    
+
                 }
 
                 if (estado.EsAceptacion)
@@ -220,7 +221,7 @@ namespace ProyectoFinal_RicardoChian
                 fila++;
             }
 
-            for (int i = 1; i < Analizador.Arbol.TablaTransiciones.Count+1; i++)
+            for (int i = 1; i < Analizador.Arbol.TablaTransiciones.Count + 1; i++)
             {
                 for (int j = 0; j < Analizador.Arbol.Estados.Count; j++)
                 {
@@ -283,6 +284,77 @@ namespace ProyectoFinal_RicardoChian
 
         private void btn_GenerarArchivo_Click(object sender, EventArgs e)
         {
+            
+            var cuerpocodigo = "";
+
+            var inicio = 0;
+            var fin = 0;
+
+            var listaLlavesSets = new List<string>();
+            var listaLlavestokens = new List<string>();
+
+            foreach (var set in Analizador.ManejadorArchivo.Sets.Keys)
+            {
+                if (set != "SETS")
+                {
+                    listaLlavesSets.Add(set);
+                }
+            }
+
+            foreach (var set in Analizador.ManejadorArchivo.Tokens.Keys)
+            {
+                if (set != "TOKENS")
+                {
+                    listaLlavestokens.Add(set);
+                }
+            }
+
+            cuerpocodigo = "var token = 0;";
+
+            var caracter = "";
+            var keyNumber = string.Empty;
+
+            //var condicional = " if(contenido[i] == \"" + caracter + "\")" +
+            //                  "{ var = " + keyNumber + "}";
+
+            foreach (var tokenKeyNumber in listaLlavestokens)
+            {
+                keyNumber = tokenKeyNumber;
+
+                foreach (var caracteres in Analizador.ManejadorArchivo.Tokens[tokenKeyNumber])
+                {
+                    caracter = caracteres;
+                    cuerpocodigo += " if(contenido[i].ToString() == \"" + caracter + "\")" +
+                                    "{ token = " + keyNumber + ";" +
+                                    "Console.WriteLine(contenido[i] + \"=\" + token);" +
+                                    "}else{" +
+                                    "token = error;}";
+                }
+            }
+
+            var contenido = "";
+
+            cuerpocodigo += "if(contenido[i] == 0 || contenido[i] == 1 || contenido[i] == 2 || contenido[i] == 3){" +
+                            "token = 1;" +
+                            "Console.WriteLine(contenido[i] + \"=\" + token);" +
+                            "}else{" +
+                            "token = error;}";
+            contenido +=
+                "using System;using System.IO;using System.Text;namespace Prueba{class Program{static void Main(string[] args){\nConsole.WriteLine(\"-----Scanner------\");\nConsole.WriteLine(\"\\n\\nIngrese dirección de archivo de texto: \");var path = Console.ReadLine();var contenido = string.Empty; var error = " + Analizador.ManejadorArchivo.Error + ";Console.WriteLine(error); using (var file = new FileStream(path, FileMode.Open)){using (var reader = new StreamReader(file, Encoding.UTF8)){contenido = reader.ReadToEnd();}} for (int i = 0; i < contenido.Length; i++){if (contenido[i] != ' ' && contenido[i] != '\\r' && contenido[i] != '\\n'){"  + cuerpocodigo +  "}}}}}";
+
+
+            var direccion = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Automata.cs";
+
+            using (var file = new FileStream(direccion, FileMode.Append))
+            {
+                using (var writer = new StreamWriter(file))
+                {
+                    writer.Write(contenido);
+                }
+            }
+
+
+            MessageBox.Show("Se ha creado el archivo en el Escritorio Correctamente", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
         }
     }
